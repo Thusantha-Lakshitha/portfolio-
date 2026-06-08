@@ -40,6 +40,25 @@ const Portfolio = () => {
 const StandaloneResume = () => {
   const { theme } = useTheme();
 
+  const handleDownload = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('/Thusantha_Lakshitha.pdf');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Thusantha_Lakshitha.pdf');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download failed:', error);
+      window.open('/Thusantha_Lakshitha.pdf', '_blank');
+    }
+  };
+
   return (
     <div className={`min-h-screen flex flex-col p-4 sm:p-6 md:p-8 ${theme === 'dark' ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
       <div className="max-w-5xl mx-auto w-full flex-1 flex flex-col gap-4">
@@ -58,13 +77,12 @@ const StandaloneResume = () => {
             >
               Back to Portfolio
             </a>
-            <a
-              href="/Thusantha_Lakshitha.pdf"
-              download="Thusantha_Lakshitha.pdf"
+            <button
+              onClick={handleDownload}
               className="px-4 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold transition-colors shadow-sm"
             >
               Download PDF
-            </a>
+            </button>
           </div>
         </div>
         

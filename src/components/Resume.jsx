@@ -22,6 +22,25 @@ const Resume = () => {
     }
   ];
 
+  const handleDownload = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('/Thusantha_Lakshitha.pdf');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Thusantha_Lakshitha.pdf');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download failed:', error);
+      window.open('/Thusantha_Lakshitha.pdf', '_blank');
+    }
+  };
+
   return (
     <section id="resume" className="py-20 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -105,13 +124,12 @@ const Resume = () => {
                   <FileText size={14} /> Thusantha_Lakshitha.pdf
                 </span>
                 
-                <a
-                  href="/Thusantha_Lakshitha.pdf"
-                  download="Thusantha_Lakshitha.pdf"
+                <button
+                  onClick={handleDownload}
                   className="px-3 py-1.5 rounded-lg bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs transition-colors flex items-center gap-1.5 shadow-sm"
                 >
                   <Download size={12} /> Download
-                </a>
+                </button>
               </div>
 
               {/* PDF frame container */}
